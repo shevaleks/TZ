@@ -28,4 +28,5 @@ git:
       - repository: "ssh://git@github.com/shevaleks/TZ.git"
         name: "TEST_DAGS"
         branch: "main"
-        subPath: "airflow/dags"
+        path: ""
+        subPath: ""
