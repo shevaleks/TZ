@@ -20,33 +20,12 @@ airflow:
   config:
     AIRFLOW__CORE__FERNET_KEY: "myfernetkey"
     AIRFLOW__WEBSERVER__BASE_URL: "http://my-airflow-domain.com"
-  extraConfigmapMounts:
-    - name: dmy-dag-configmap
-      mountPath: /opt/airflow/dags
-      subPath: ""
-      readOnly: true
-      items:
-        - key: "dag.py"
-          path: "./airflow/dags/dag.py"
-# dags:
-#   configMap: "my-dag-configmap"
 
-  extraVolumes: 
-    - name: my-dag-configmap
-      configMap:
-        name: my-dag-configmap
-
-  extraVolumeMounts: 
-    - name: my-dag-configmap
-      mountPath: ./airflow/dags:/opt/airflow/dags
-      readOnly: true
-
-
-# externalDatabase:
-#   host: db-postgresql-fra1-kafka-do-user-16960067-0.c.db.ondigitalocean.com
-#   port: 25060
-#   user: doadmin
-#   database: defaultdb
-#   password: ""
-#   existingSecret: ""
-#   existingSecretPasswordKey: ""
+git:
+  dags:
+    enabled: true
+    repositories:
+      - repository: "ssh://git@github.com/shevaleks/TZ.git"
+        name: "TEST_DAGS"
+        branch: "main"
+        subPath: "airflow/dags"
