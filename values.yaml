@@ -1,0 +1,52 @@
+airflow:
+  image:
+    repository: apache/airflow
+    tag: 2.5.0
+    pullPolicy: IfNotPresent
+  executor: "LocalExecutor"
+  # executor: CeleryExecutor
+  # config:
+  #   AIRFLOW__CORE__FERNET_KEY: "your-fernet-key"
+  #   AIRFLOW__CORE__EXECUTOR: "CeleryExecutor"
+  #   AIRFLOW__WEBSERVER__AUTH_BACKEND: "airflow.contrib.auth.backends.password_auth"
+  # fernetKey: "your-fernet-key"
+  web:
+    service:
+      type: LoadBalancer
+    defaultUser:
+      enabled: true
+      username: admin
+      password: admin1!
+  config:
+    AIRFLOW__CORE__FERNET_KEY: "myfernetkey"
+    AIRFLOW__WEBSERVER__BASE_URL: "http://my-airflow-domain.com"
+  extraConfigmapMounts:
+    - name: dmy-dag-configmap
+      mountPath: /opt/airflow/dags
+      subPath: ""
+      readOnly: true
+      items:
+        - key: "dag.py"
+          path: "./airflow/dags/dag.py"
+# dags:
+#   configMap: "my-dag-configmap"
+
+  extraVolumes: 
+    - name: my-dag-configmap
+      configMap:
+        name: my-dag-configmap
+
+  extraVolumeMounts: 
+    - name: my-dag-configmap
+      mountPath: ./airflow/dags:/opt/airflow/dags
+      readOnly: true
+
+
+# externalDatabase:
+#   host: db-postgresql-fra1-kafka-do-user-16960067-0.c.db.ondigitalocean.com
+#   port: 25060
+#   user: doadmin
+#   database: defaultdb
+#   password: ""
+#   existingSecret: ""
+#   existingSecretPasswordKey: ""
