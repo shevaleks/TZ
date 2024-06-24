@@ -13,13 +13,15 @@ airflow:
   web:
     service:
       type: LoadBalancer
+    waitForMigrations:
+      enabled: true
     defaultUser:
       enabled: true
       username: admin
       password: admin1!
-  config:
-    AIRFLOW__CORE__FERNET_KEY: "myfernetkey"
-    AIRFLOW__WEBSERVER__BASE_URL: "http://my-airflow-domain.com"
+  # config:
+  #   AIRFLOW__CORE__FERNET_KEY: "myfernetkey"
+  #   AIRFLOW__WEBSERVER__BASE_URL: "http://my-airflow-domain.com"
 
 # git:
 #   dags:
@@ -35,9 +37,11 @@ dags:
   gitSync:
     enabled: true
     repo: git@github.com/shevaleks/TZ.git
-    branch: main
-    subPath: "/airflow/dags"
+    branch: dags
+    subPath: "/"
     sshKeySecret: airflow-ssh-secret
+    containerName: git-sync
+    uid: 65533
 extraSecrets:
   airflow-ssh-secret:
     data: |
