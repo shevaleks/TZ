@@ -4,7 +4,7 @@ from airflow.utils.dates import days_ago
 import psycopg2
 
 def write_to_db():
-    conn = psycopg2.connect("dbname='mydatabase' user='foo' host='your-db-endpoint' password='bar'")
+    conn = psycopg2.connect("dbname='defaultdb' user='doadmin' host='postrgesber-do-user-16960067-0.c.db.ondigitalocean.com' password='AVNS_t23FbFcXR4hZmXEZfTm'")
     cur = conn.cursor()
     cur.execute("INSERT INTO your_table (column) VALUES ('value');")
     conn.commit()
