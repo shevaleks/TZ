@@ -1,0 +1,43 @@
+name: CI/CD for Airflow DAGs
+
+on:
+  push:
+    branches:
+      - dags
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v1
+        with:
+          version: v3.5.4
+      
+      - name: Install doctl
+        run: |
+          sudo snap install doctl
+
+      - name: Authenticate with DigitalOcean
+        env:
+          DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+        run: |
+          doctl auth init -t $DIGITALOCEAN_ACCESS_TOKEN
+      
+      - name: Get kubeconfig
+        env:
+          DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+        run: |
+          doctl kubernetes cluster kubeconfig save 245e42c6-1326-48fa-a82f-5e88885783cf
+      
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v1
+        with:
+          version: v1.18.8
+      
+      - name: Deploy to Kubernetes
+        run: |
+          helm upgrade --install airflow apache-airflow/airflow
