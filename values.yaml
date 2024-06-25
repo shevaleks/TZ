@@ -15,14 +15,22 @@ airflow:
       type: LoadBalancer
     waitForMigrations:
       enabled: true
-    defaultUser:
-      enabled: true
-      username: admin
-      password: admin1!
+    # defaultUser:
+    #   enabled: true
+    #   username: admin
+    #   password: admin1!
   # config:
   #   AIRFLOW__CORE__FERNET_KEY: "myfernetkey"
   #   AIRFLOW__WEBSERVER__BASE_URL: "http://my-airflow-domain.com"
-
+  # connections:
+  #   - id: my_postgres_connection
+  #     type: postgres
+  #     description: "Connection to PostgreSQL on DigitalOcean"
+  #     host: postgresber-do-user-16960067-0.c.db.ondigitalocean.com
+  #     schema: defaultdb
+  #     login: doadmin
+  #     password: 
+  #     port: 25060
 # git:
 #   dags:
 #     enabled: true
