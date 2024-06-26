@@ -6,5 +6,10 @@
 *.code-workspace
 .history/
 .tfstate
-variables.tf
+*.tfstate
+*.tfstate*
+*variables.tf
 .DS_STORE
+.terraform*
+.terraform/*
+.DS_Store
